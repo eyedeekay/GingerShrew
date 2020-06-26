@@ -1,18 +1,10 @@
 package gingershrew
 
 import (
-	"github.com/eyedeekay/gingershrew/browser"
-	"github.com/eyedeekay/gingershrew/chrome"
-	"github.com/eyedeekay/gingershrew/defaults"
-	"github.com/eyedeekay/gingershrew/extensions"
-	"github.com/eyedeekay/gingershrew/features"
-	"github.com/eyedeekay/gingershrew/fonts"
-	"github.com/eyedeekay/gingershrew/gmp-clearkey"
-	"github.com/eyedeekay/gingershrew/gtk2"
-	"github.com/eyedeekay/gingershrew/icons"
-	"github.com/eyedeekay/gingershrew/libs/a"
-	"github.com/eyedeekay/gingershrew/libs/b"
-	"github.com/eyedeekay/gingershrew/libs/c"
-	"github.com/eyedeekay/gingershrew/libs/d"
-	"github.com/eyedeekay/gingershrew/libs/e"
+	"github.com/eyedeekay/gingershrew/parts/aa"
+	"github.com/eyedeekay/gingershrew/parts/ab"
+	"github.com/eyedeekay/gingershrew/parts/ac"
+	"github.com/eyedeekay/gingershrew/parts/ad"
+	"github.com/eyedeekay/gingershrew/parts/ae"
+	"github.com/eyedeekay/gingershrew/parts/af"
 )

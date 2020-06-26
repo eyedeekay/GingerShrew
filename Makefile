@@ -79,21 +79,29 @@ rhz:
 	sed -i 's|No Corporation|No Corporation|g' gnuzilla/makeicecat
 	sed -i 's|\\>GNU\\|\\>No\\|g' gnuzilla/makeicecat
 
-tar: copy-linux
-	mkdir -p chrome extensions features browser defaults fonts gmp-clearkey gtk2 icons libs libs/a libs/b libs/c libs/d libs/e
-	tar cvzf chrome.tar.gz gingershrew/browser/chrome
-	tar cvzf extensions.tar.gz gingershrew/browser/extensions
-	tar cvzf features.tar.gz gingershrew/browser/features
-	tar cvzf browser.tar.gz gingershrew/browser/*.*
-	tar cvzf defaults.tar.gz gingershrew/defaults
-	tar cvzf fonts.tar.gz gingershrew/fonts
-	tar cvzf gmp-clearkey.tar.gz gingershrew/gmp-clearkey
-	tar cvzf gtk2.tar.gz gingershrew/gtk2
-	tar cvzf icons.tar.gz gingershrew/icons
-	tar cvzf libs.tar.gz gingershrew/libs
-	split -n 5 libs.tar.gz libs.tar.gz.
-	tar cvzf base.tar.gz gingershrew/root
-	ls -lah *.tar.gz
+clean:
+	rm -rf chrome extensions features browser defaults fonts gmp-clearkey gtk2 icons libs libs/a libs/b libs/c libs/d libs/e
+
+tar:
+	mkdir -p parts/aa parts/ab parts/ac parts/ad parts/ae parts/af
+	split -n 6 gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2 split-gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2.
 	go run --tags generate gen.go
+
+#tar: copy-linux
+#	mkdir -p chrome extensions features browser defaults fonts gmp-clearkey gtk2 icons libs libs/a libs/b libs/c libs/d libs/e
+#	tar cvzf chrome.tar.gz gingershrew/browser/chrome
+#	tar cvzf extensions.tar.gz gingershrew/browser/extensions
+#	tar cvzf features.tar.gz gingershrew/browser/features
+#	tar cvzf browser.tar.gz gingershrew/browser/*.*
+#	tar cvzf defaults.tar.gz gingershrew/defaults
+#	tar cvzf fonts.tar.gz gingershrew/fonts
+#	tar cvzf gmp-clearkey.tar.gz gingershrew/gmp-clearkey
+#	tar cvzf gtk2.tar.gz gingershrew/gtk2
+#	tar cvzf icons.tar.gz gingershrew/icons
+#	tar cvzf libs.tar.gz gingershrew/libs
+#	split -n 5 libs.tar.gz libs.tar.gz.
+#	tar cvzf base.tar.gz gingershrew/root
+#	ls -lah *.tar.gz
+#	go run --tags generate gen.go
 
 
