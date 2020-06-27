@@ -84,8 +84,23 @@ clean:
 
 tar:
 	mkdir -p parts/aa parts/ab parts/ac parts/ad parts/ae parts/af
-	split -n 6 gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2 split-gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2.
+	mkdir -p parts/ag parts/ah parts/ai parts/aj parts/ak parts/al
+	cat unpacker.go.pre | sed 's|REPLACEME|gsaa|g' | tee parts/aa/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsab|g' | tee parts/ab/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsac|g' | tee parts/ac/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsad|g' | tee parts/ad/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsae|g' | tee parts/ae/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsaf|g' | tee parts/af/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsag|g' | tee parts/ag/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsah|g' | tee parts/ah/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsai|g' | tee parts/ai/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsaj|g' | tee parts/aj/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsak|g' | tee parts/ak/unpacker.go
+	cat unpacker.go.pre | sed 's|REPLACEME|gsal|g' | tee parts/al/unpacker.go
+	split -n 12 gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2 split-gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2.
 	go run --tags generate gen.go
+
+
 
 #tar: copy-linux
 #	mkdir -p chrome extensions features browser defaults fonts gmp-clearkey gtk2 icons libs libs/a libs/b libs/c libs/d libs/e
