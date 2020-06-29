@@ -2,6 +2,10 @@ package gingershrew
 
 import (
 	"io/ioutil"
+	"os"
+	"path/filepath"
+
+	"github.com/mholt/archiver/v3"
 
 	"github.com/eyedeekay/gingershrew/parts/aa"
 	"github.com/eyedeekay/gingershrew/parts/ab"
@@ -88,6 +92,25 @@ func WriteTBZ() error {
 		return err
 	}
 	err = ioutil.WriteFile("gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2", bytes, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func UnpackTBZ(destinationDirectory string) error {
+	if destinationDirectory == "" {
+		destinationDirectory = "."
+	}
+	err := os.RemoveAll(filepath.Join(destinationDirectory, "gingershrew"))
+	if err != nil {
+		return err
+	}
+	err = WriteTBZ()
+	if err != nil {
+		return err
+	}
+	err = archiver.Unarchive("gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2", destinationDirectory)
 	if err != nil {
 		return err
 	}

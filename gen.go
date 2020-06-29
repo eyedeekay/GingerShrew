@@ -21,8 +21,7 @@ var UPPERCASE = "GINGERSHREW"
 var Full_Name = "Free GingerShrew"
 var Developer = "From A Tiny Rodent"
 var Foundation = "No Foundation"
-var Corporation ="No Corporation"
-
+var Corporation = "No Corporation"
 
 var unpacker = `package REPLACEME
 
@@ -163,8 +162,8 @@ func splitBinaries() error {
 	}
 	chunkSize := len(bytes) / 12
 	for index, lib := range libs {
-		start :=  index * chunkSize
-		finish := ((index+1) * chunkSize)
+		start := index * chunkSize
+		finish := ((index + 1) * chunkSize)
 		if index == 11 {
 			finish = len(bytes)
 		}

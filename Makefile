@@ -102,4 +102,6 @@ gen: copy-linux
 test:
 	cd import && GO111MODULE=off go test
 
-
+fmt:
+	find import -name '*.go' -exec gofmt -w -s {} \;
+	gofmt -w -s *.go
