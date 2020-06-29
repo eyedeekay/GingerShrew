@@ -68,13 +68,16 @@ rhz:
 	./rewrite
 	find ./gnuzilla/ -type f -exec sed -i 's|GNU GingerShrew|Free GingerShrew|g' {} \;
 	sed -i 's|GNU GingerShrew|Free GingerShrew|g' gnuzilla/makeicecat
+	find ./gnuzilla/ -type f -exec sed -i 's|From GNU|From A Tiny Rodent|g' {} \;
 	sed -i 's|From GNU|From A Tiny Rodent|g' gnuzilla/makeicecat
+	find ./gnuzilla/ -type f -exec sed -i 's|GNU Foundation|No Foundation|g' {} \;
 	sed -i 's|GNU Foundation|No Foundation|g' gnuzilla/makeicecat
+	find ./gnuzilla/ -type f -exec sed -i 's|No Corporation|No Corporation|g' {} \;
 	sed -i 's|No Corporation|No Corporation|g' gnuzilla/makeicecat
 	sed -i 's|\\>GNU\\|\\>No\\|g' gnuzilla/makeicecat
 
 clean:
-	rm -rfv gnuzilla \
+	rm -rf gnuzilla \
 		gingershrew*.tar.bz2*
 
 gen:
