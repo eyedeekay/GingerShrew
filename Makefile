@@ -8,8 +8,24 @@ GINGERSHREW_VERSION=68
 GINGERSHREW_REVISION=9
 
 GO_COMPILER_OPTS = -a -tags netgo -ldflags '-w -extldflags "-static"'
+export CCACHE_DIR=$(PWD)/ccache
+export CCACHE_COMPRESS=""
 
 build: gingershrew gen
+
+sums:
+	sha256sum gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2
+	sha256sum import/gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2
+
+xxd:
+	xxd -c 120 gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2 import/gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2
+
+ccache:
+	echo "$CCACHE_DIR $CCACHE_COMPRESS"
+	ccache --max-size 25G
+
+deps:
+	sudo apt-get install gcc g++ make patch perl python unzip zip autoconf automake build-essential checkinstall debhelper devscripts dpkg-dev fakeroot gdb-minimal libc6 libc6-dev libtool intltool pbuilder pkg-config ccache cdbs locales debhelper autotools-dev autoconf2.13 zip libx11-dev libx11-xcb-dev libxt-dev libxext-dev libgtk2.0-dev libgtk-3-dev libglib2.0-dev libpango1.0-dev libfontconfig1-dev libfreetype6-dev libstartup-notification0-dev libasound2-dev libcurl4-openssl-dev libdbus-glib-1-dev lsb-release libiw-dev mesa-common-dev libnotify-dev libxrender-dev libpulse-dev nasm yasm unzip dbus-x11 xvfb python python3 clang llvm cargo rustc nodejs
 
 gnuzilla:
 	git clone --depth=1 "https://git.savannah.gnu.org/git/gnuzilla.git" -b $(GINGERSHREW_VERSION); true
@@ -22,7 +38,7 @@ gnuzilla-version:
 gnuzilla/output:
 	cd gnuzilla && ./makeicecat
 
-gingershrew: gnuzilla gnuzilla-version rhz gnuzilla/output rhz gingershrew-linux-workdir gingershrew-linux-configure gingershrew-linux-build gingershrew-linux-package
+gingershrew: gnuzilla gnuzilla-version rhz gnuzilla/output gingershrew-linux-workdir gingershrew-linux-configure gingershrew-linux-build gingershrew-linux-package
 
 copy-linux:
 	rm -rf gingershrew
@@ -80,7 +96,7 @@ clean:
 	rm -rf gnuzilla \
 		gingershrew*.tar.bz2*
 
-gen:
+gen: copy-linux
 	go run --tags generate gen.go
 
 test:

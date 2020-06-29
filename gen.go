@@ -164,12 +164,16 @@ func splitBinaries() error {
 	chunkSize := len(bytes) / 12
 	for index, lib := range libs {
 		start :=  index * chunkSize
-		finish := (index+1) * chunkSize
+		finish := ((index+1) * chunkSize)
+		if index == 11 {
+			finish = len(bytes)
+		}
 		outBytes := bytes[start:finish]
 		err := ioutil.WriteFile(fileToBeChunked+"."+lib, outBytes, 0644)
 		if err != nil {
 			return err
 		}
+		log.Printf("Started at: %d,  Ended at: %d", start, finish)
 	}
 	return nil
 }

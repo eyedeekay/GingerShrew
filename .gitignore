@@ -1,3 +1,5 @@
 gnuzilla
 *.tar.bz2*
+import/*.tar.bz2*
 gingershrew
+ccache
