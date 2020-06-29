@@ -9,8 +9,7 @@ GINGERSHREW_REVISION=9
 
 GO_COMPILER_OPTS = -a -tags netgo -ldflags '-w -extldflags "-static"'
 
-build: setup assets.go
-	go build $(GO_COMPILER_OPTS)
+build: gingershrew gen
 
 gnuzilla:
 	git clone --depth=1 "https://git.savannah.gnu.org/git/gnuzilla.git" -b $(GINGERSHREW_VERSION); true
@@ -28,12 +27,7 @@ gingershrew: gnuzilla gnuzilla-version rhz gnuzilla/output rhz gingershrew-linux
 copy-linux:
 	rm -rf gingershrew
 	find gnuzilla -name gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2 -exec cp {} ./ \;
-	find . -name gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2 -exec tar xjf {} \;
-	rm -rf gingershrew/libs && mkdir -p gingershrew/libs
-	cp -v gingershrew/*.so gingershrew/libs
-	rm -v gingershrew/*.so
-	rm -rf gingershrew/root && mkdir -p gingershrew/root
-	-cp -v gingershrew/* gingershrew/root
+	#find . -name gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2 -exec tar xjf {} \;
 	#find . -name gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2 -exec cp {} ./gingershrew/ \;
 
 gingershrew-linux-workdir:
@@ -80,43 +74,13 @@ rhz:
 	sed -i 's|\\>GNU\\|\\>No\\|g' gnuzilla/makeicecat
 
 clean:
-	rm -rf chrome extensions features browser defaults fonts gmp-clearkey gtk2 icons libs libs/a libs/b libs/c libs/d libs/e
+	rm -rfv gnuzilla \
+		gingershrew*.tar.bz2*
 
-tar:
-	mkdir -p parts/aa parts/ab parts/ac parts/ad parts/ae parts/af
-	mkdir -p parts/ag parts/ah parts/ai parts/aj parts/ak parts/al
-	cat unpacker.go.pre | sed 's|REPLACEME|gsaa|g' | tee parts/aa/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsab|g' | tee parts/ab/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsac|g' | tee parts/ac/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsad|g' | tee parts/ad/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsae|g' | tee parts/ae/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsaf|g' | tee parts/af/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsag|g' | tee parts/ag/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsah|g' | tee parts/ah/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsai|g' | tee parts/ai/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsaj|g' | tee parts/aj/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsak|g' | tee parts/ak/unpacker.go
-	cat unpacker.go.pre | sed 's|REPLACEME|gsal|g' | tee parts/al/unpacker.go
-	split -n 12 gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2 split-gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2.
+gen:
 	go run --tags generate gen.go
 
-
-
-#tar: copy-linux
-#	mkdir -p chrome extensions features browser defaults fonts gmp-clearkey gtk2 icons libs libs/a libs/b libs/c libs/d libs/e
-#	tar cvzf chrome.tar.gz gingershrew/browser/chrome
-#	tar cvzf extensions.tar.gz gingershrew/browser/extensions
-#	tar cvzf features.tar.gz gingershrew/browser/features
-#	tar cvzf browser.tar.gz gingershrew/browser/*.*
-#	tar cvzf defaults.tar.gz gingershrew/defaults
-#	tar cvzf fonts.tar.gz gingershrew/fonts
-#	tar cvzf gmp-clearkey.tar.gz gingershrew/gmp-clearkey
-#	tar cvzf gtk2.tar.gz gingershrew/gtk2
-#	tar cvzf icons.tar.gz gingershrew/icons
-#	tar cvzf libs.tar.gz gingershrew/libs
-#	split -n 5 libs.tar.gz libs.tar.gz.
-#	tar cvzf base.tar.gz gingershrew/root
-#	ls -lah *.tar.gz
-#	go run --tags generate gen.go
+test:
+	cd import && GO111MODULE=off go test
 
 
