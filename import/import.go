@@ -7,18 +7,18 @@ import (
 
 	"github.com/mholt/archiver/v3"
 
-	"github.com/eyedeekay/gingershrew/parts/aa"
-	"github.com/eyedeekay/gingershrew/parts/ab"
-	"github.com/eyedeekay/gingershrew/parts/ac"
-	"github.com/eyedeekay/gingershrew/parts/ad"
-	"github.com/eyedeekay/gingershrew/parts/ae"
-	"github.com/eyedeekay/gingershrew/parts/af"
-	"github.com/eyedeekay/gingershrew/parts/ag"
-	"github.com/eyedeekay/gingershrew/parts/ah"
-	"github.com/eyedeekay/gingershrew/parts/ai"
-	"github.com/eyedeekay/gingershrew/parts/aj"
-	"github.com/eyedeekay/gingershrew/parts/ak"
-	"github.com/eyedeekay/gingershrew/parts/al"
+	"github.com/eyedeekay/GingerShrew/parts/aa"
+	"github.com/eyedeekay/GingerShrew/parts/ab"
+	"github.com/eyedeekay/GingerShrew/parts/ac"
+	"github.com/eyedeekay/GingerShrew/parts/ad"
+	"github.com/eyedeekay/GingerShrew/parts/ae"
+	"github.com/eyedeekay/GingerShrew/parts/af"
+	"github.com/eyedeekay/GingerShrew/parts/ag"
+	"github.com/eyedeekay/GingerShrew/parts/ah"
+	"github.com/eyedeekay/GingerShrew/parts/ai"
+	"github.com/eyedeekay/GingerShrew/parts/aj"
+	"github.com/eyedeekay/GingerShrew/parts/ak"
+	"github.com/eyedeekay/GingerShrew/parts/al"
 )
 
 func TBZBytes() ([]byte, error) {

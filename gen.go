@@ -29,7 +29,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-//	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -82,6 +81,52 @@ func WriteBrowser(FS *fs) ([]byte, error) {
 }
 `
 
+var mozconfig_windows = `
+. "$topsrcdir/build/mozconfig.win-common"
+
+unset MAKECAB
+unset DUMP_SYMS
+
+. "$topsrcdir/browser/config/mozconfigs/common"
+
+export MOZ_PACKAGE_JSSHELL=1
+
+ac_add_options --target=x86_64-w64-mingw32
+ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
+
+ac_add_options --disable-warnings-as-errors
+MOZ_COPY_PDBS=1
+mk_add_options "export WIDL_TIME_OVERRIDE=0"
+
+ac_add_options --enable-proxy-bypass-protection
+
+ac_add_options --disable-webrtc # Bug 1393901
+ac_add_options --disable-geckodriver # Bug 1489320
+ac_add_options --disable-update-agent # Bug 1561797
+
+HOST_CC="$MOZ_FETCHES_DIR/clang/bin/clang"
+HOST_CXX="$MOZ_FETCHES_DIR/clang/bin/clang++"
+CC="$MOZ_FETCHES_DIR/clang/bin/x86_64-w64-mingw32-clang"
+CXX="$MOZ_FETCHES_DIR/clang/bin/x86_64-w64-mingw32-clang++"
+ac_add_options --with-clang-path="$CC"
+ac_add_options --with-libclang-path="$MOZ_FETCHES_DIR/clang/lib"
+CXXFLAGS="-fms-extensions"
+AR=llvm-ar
+RANLIB=llvm-ranlib
+
+BINDGEN_CFLAGS="-I$MOZ_FETCHES_DIR/clang/x86_64-w64-mingw32/include/c++/v1 -I$MOZ_FETCHES_DIR/clang/x86_64-w64-mingw32/include"
+
+mk_add_options "export PATH=$MOZ_FETCHES_DIR/clang/bin:$MOZ_FETCHES_DIR/mingw32/bin:$MOZ_FETCHES_DIR/wine/bin:$MOZ_FETCHES_DIR/upx/bin:$MOZ_FETCHES_DIR/fxc2/bin:$MOZ_FETCHES_DIR/binutils/bin:$PATH"
+
+LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$MOZ_FETCHES_DIR/mingw32/lib64:$MOZ_FETCHES_DIR/clang/lib
+mk_add_options "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+
+
+ac_add_options --with-branding=browser/branding/nightly
+
+. "$topsrcdir/build/mozconfig.common.override"
+`
+
 func main() {
 	// You can also run "npm build" or webpack here, or compress assets, or
 	// generate manifests, or do other preparations for your assets.
@@ -98,45 +143,9 @@ func main() {
 	if err := splitBinaries(); err != nil {
 		log.Fatal(err)
 	}
-	lorca.Embed("gsaa", "parts/aa/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.aa")
-	log.Println("embedded gsaa")
-	lorca.Embed("gsab", "parts/ab/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.ab")
-	log.Println("embedded gsab")
-	lorca.Embed("gsac", "parts/ac/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.ac")
-	log.Println("embedded gsac")
-	lorca.Embed("gsad", "parts/ad/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.ad")
-	log.Println("embedded gsad")
-	lorca.Embed("gsae", "parts/ae/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.ae")
-	log.Println("embedded gsae")
-	lorca.Embed("gsaf", "parts/af/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.af")
-	log.Println("embedded gsaf")
-	lorca.Embed("gsag", "parts/ag/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.ag")
-	log.Println("embedded gsag")
-	lorca.Embed("gsah", "parts/ah/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.ah")
-	log.Println("embedded gsah")
-	lorca.Embed("gsai", "parts/ai/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.ai")
-	log.Println("embedded gsai")
-	lorca.Embed("gsaj", "parts/aj/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.aj")
-	log.Println("embedded gsaj")
-	lorca.Embed("gsak", "parts/ak/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.ak")
-	log.Println("embedded gsak")
-	lorca.Embed("gsal", "parts/al/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2.al")
-	log.Println("embedded gsal")
-}
-
-var dirs = []string{
-	"parts/aa",
-	"parts/ab",
-	"parts/ac",
-	"parts/ad",
-	"parts/ae",
-	"parts/af",
-	"parts/ag",
-	"parts/ah",
-	"parts/ai",
-	"parts/aj",
-	"parts/ak",
-	"parts/al",
+	if err := updateAllChunks(); err != nil{
+		log.Fatal(err)
+	}
 }
 
 var libs = []string{
@@ -152,6 +161,22 @@ var libs = []string{
 	"aj",
 	"ak",
 	"al",
+}
+
+func updateChunk(chunk string) error {
+	err := lorca.Embed("gs"+chunk, "parts/"+chunk+"/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2."+chunk)
+	if err != nil {
+		return err
+	}
+	log.Println("embedded gs"+chunk)
+	return nil
+}
+
+func updateAllChunks() error {
+	for _, lib:= range libs {
+		updateChunk(lib)
+	}
+	return nil
 }
 
 func splitBinaries() error {
@@ -206,3 +231,4 @@ func generateGoUnpacker() error {
 	}
 	return nil
 }
+
