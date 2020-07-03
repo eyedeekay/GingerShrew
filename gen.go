@@ -164,7 +164,7 @@ var libs = []string{
 }
 
 func updateChunk(chunk string) error {
-	err := lorca.Embed("gs"+chunk, "parts/"+chunk+"/chunk.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2."+chunk)
+	err := lorca.Embed("gs"+chunk, "parts/"+chunk+"/chunk_linux.go", "gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2."+chunk)
 	if err != nil {
 		return err
 	}

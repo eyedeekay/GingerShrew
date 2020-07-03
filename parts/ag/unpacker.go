@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-//	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
