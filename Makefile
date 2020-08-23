@@ -25,7 +25,7 @@ ccache:
 	ccache --max-size 25G
 
 deps:
-	apt-get install -y gcc g++ make patch perl python unzip zip autoconf automake build-essential checkinstall debhelper devscripts dpkg-dev fakeroot gdb-minimal libc6 libc6-dev libtool intltool pbuilder pkg-config ccache cdbs locales debhelper autotools-dev autoconf2.13 zip libx11-dev libx11-xcb-dev libxt-dev libxext-dev libgtk2.0-dev libgtk-3-dev libglib2.0-dev libpango1.0-dev libfontconfig1-dev libfreetype6-dev libstartup-notification0-dev libasound2-dev libcurl4-openssl-dev libdbus-glib-1-dev lsb-release libiw-dev mesa-common-dev libnotify-dev libxrender-dev libpulse-dev nasm yasm unzip dbus-x11 xvfb python python3 clang llvm cargo rustc nodejs
+	apt-get install -y gcc g++ make patch perl python unzip zip autoconf automake build-essential checkinstall debhelper devscripts dpkg-dev fakeroot gdb libc6 libc6-dev libtool intltool pbuilder pkg-config ccache cdbs locales debhelper autotools-dev autoconf2.13 zip libx11-dev libx11-xcb-dev libxt-dev libxext-dev libgtk2.0-dev libgtk-3-dev libglib2.0-dev libpango1.0-dev libfontconfig1-dev libfreetype6-dev libstartup-notification0-dev libasound2-dev libcurl4-openssl-dev libdbus-glib-1-dev lsb-release libiw-dev mesa-common-dev libnotify-dev libxrender-dev libpulse-dev nasm yasm unzip dbus-x11 xvfb python python3 clang llvm cargo rustc nodejs mercurial rename
 
 gnuzilla:
 	git clone --depth=1 "https://git.savannah.gnu.org/git/gnuzilla.git" -b $(GINGERSHREW_VERSION); true
@@ -129,11 +129,18 @@ rhz:
 	sed -i 's|No Corporation|No Corporation|g' gnuzilla/makeicecat
 	sed -i 's|\\>GNU\\|\\>No\\|g' gnuzilla/makeicecat
 
+libdir:
+	rm -rf lib && mkdir -p lib
+	apt-get download libc6 libc6-dev
+	dpkg -x libc6-dev*.deb ./lib
+	dpkg -x libc6_*.deb ./lib
+
+
 clean:
 	rm -rf gnuzilla \
 		gingershrew*.tar.bz2*
 
-gen: copy-linux
+gen: copy-linux libdir
 	go run --tags generate gen.go
 
 test:

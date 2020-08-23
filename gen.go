@@ -143,8 +143,11 @@ func main() {
 	if err := splitBinaries(); err != nil {
 		log.Fatal(err)
 	}
-	if err := updateAllChunks(); err != nil{
+	if err := updateAllChunks(); err != nil {
 		log.Fatal(err)
+	}
+	if err := lorca.Embed("gingershrew", "import/libc.go", "lib/lib"); err != nil {
+	  log.Fatal(err)
 	}
 }
 

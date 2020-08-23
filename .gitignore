@@ -3,3 +3,6 @@ gnuzilla
 import/*.tar.bz2*
 gingershrew
 ccache
+import/x86_64-linux-gnu
+import/gingershrew
+lib
