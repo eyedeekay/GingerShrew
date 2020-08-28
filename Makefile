@@ -5,7 +5,7 @@ GO111MODULE=on
 VERSION=0.75
 LAUNCH_VERSION=$(VERSION).09
 GINGERSHREW_VERSION=68
-GINGERSHREW_REVISION=9
+GINGERSHREW_REVISION=12
 
 GO_COMPILER_OPTS = -a -tags netgo -ldflags '-w -extldflags "-static"'
 export CCACHE_DIR=$(PWD)/ccache
@@ -14,11 +14,11 @@ export CCACHE_COMPRESS=""
 build: gingershrew gen
 
 sums:
-	sha256sum gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2
-	sha256sum import/gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2
+	sha256sum gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2
+	sha256sum import/gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2
 
 xxd:
-	xxd -c 120 gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2 import/gingershrew-68.9.0.en-US.linux-x86_64.tar.bz2
+	xxd -c 120 gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2 import/gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2
 
 ccache:
 	echo "$CCACHE_DIR $CCACHE_COMPRESS"
@@ -129,11 +129,36 @@ rhz:
 	sed -i 's|No Corporation|No Corporation|g' gnuzilla/makeicecat
 	sed -i 's|\\>GNU\\|\\>No\\|g' gnuzilla/makeicecat
 
+#libatk1.0-0 (>= 1.12.4)
+#libgdk-pixbuf2.0-0 (>= 2.22.0), 
+#libglib2.0-0 (>= 2.37.3), 
+#libgtk-3-0 (>= 3.0.0), 
+#libpango-1.0-0 (>= 1.14.0), libstdc++6 (>= 9), libvpx6 (>= 1.8.0), libx11-6, libx11-xcb1 (>= 2:1.6.10), libxcb-shm0, libxcb1, libxcomposite1 (>= 1:0.4.5), li#bxdamage1 (>= 1:1.1), libxext6, libxfixes3, libxrender1, zlib1g (>= 1:1.2.11.dfsg), fontconfig, procps, debianutils (>= 1.16)
+
 libdir:
 	rm -rf lib && mkdir -p lib
-	apt-get download libc6 libc6-dev
-	dpkg -x libc6-dev*.deb ./lib
-	dpkg -x libc6_*.deb ./lib
+	apt-get download libc6 libc6-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libcairo-gobject2 libcairo2-dev libffi7 libnss3-dev libfontconfig1 libfontconfig1-dev libfreetype6 libfreetype6-dev libgtk-3-0 libgtk-3-dev libglib2.0-0 libglib2.0-dev libpango-1.0 libpango1.0-dev zlib1g zlib1g-dev
+	dpkg -x libc6_2.31-3_amd64.deb ./lib
+	dpkg -x libc6-dev_2.31-3_amd64.deb ./lib
+	dpkg -x libcairo2-dev_1.16.0-4_amd64.deb ./lib
+	dpkg -x libcairo-gobject2_1.16.0-4_amd64.deb ./lib
+	dpkg -x libffi7_3.3-4_amd64.deb ./lib
+	dpkg -x libfontconfig1_2.13.1-4.2_amd64.deb ./lib
+	dpkg -x libfontconfig1-dev_2.13.1-4.2_amd64.deb ./lib
+	dpkg -x libfreetype6_2.10.2+dfsg-3_amd64.deb ./lib
+	dpkg -x libfreetype6-dev_2.10.2+dfsg-3_amd64.deb ./lib
+	dpkg -x libglib2.0-0_2.64.4-1_amd64.deb ./lib
+	dpkg -x libglib2.0-dev_2.64.4-1_amd64.deb ./lib
+	dpkg -x libgtk-3-0_3.24.22-1_amd64.deb ./lib
+	dpkg -x libgtk-3-dev_3.24.22-1_amd64.deb ./lib
+	dpkg -x libnspr4_2%3a4.27-1_amd64.deb ./lib
+	dpkg -x libnspr4-dev_2%3a4.27-1_amd64.deb ./lib
+	dpkg -x libnss3_2%3a3.55-1_amd64.deb ./lib
+	dpkg -x libnss3-dev_2%3a3.55-1_amd64.deb ./lib
+	dpkg -x libpango-1.0-0_1.46.1-1_amd64.deb ./lib
+	dpkg -x libpango1.0-dev_1.46.1-1_amd64.deb ./lib
+	dpkg -x zlib1g_1%3a1.2.11.dfsg-2_amd64.deb ./lib
+	dpkg -x zlib1g-dev_1%3a1.2.11.dfsg-2_amd64.deb ./lib
 
 
 clean:
