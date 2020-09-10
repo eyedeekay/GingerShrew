@@ -1,0 +1,6 @@
+FROM ubuntu:18.04
+RUN apt-get update && apt-get install -y git golang-go make
+COPY . /src/GingerShrew
+WORKDIR /src/GingerShrew
+RUN make deps
+CMD make
