@@ -1,0 +1,16 @@
+#! /usr/bin/env sh
+
+for FROM in $(find ./gnuzilla/*/ -type f -name '*icecat*'); do
+	TO=$(echo $FROM | sed 's|icecat|gingershrew|g')
+	mv $FROM $TO
+done
+
+for FROM in $(find ./gnuzilla/*/ -type f -name '*Icecat*'); do
+	TO=$(echo $FROM | sed 's|Icecat|Gingershrew|g')
+	mv $FROM $TO
+done
+
+for FROM in $(find ./gnuzilla/*/ -type f -name '*IceCat*'); do
+	TO=$(echo $FROM | sed 's|IceCat|GingerShrew|g')
+	mv $FROM $TO
+done
