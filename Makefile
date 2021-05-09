@@ -5,7 +5,7 @@ GO111MODULE=on
 VERSION=0.75
 LAUNCH_VERSION=$(VERSION).09
 GINGERSHREW_VERSION=78
-GINGERSHREW_REVISION=8
+GINGERSHREW_REVISION=10
 
 GO_COMPILER_OPTS = -a -tags netgo -ldflags '-w -extldflags "-static"'
 export CCACHE_DIR=$(PWD)/ccache
@@ -125,8 +125,12 @@ rhz:
 	sed -i 's|From GNU|From A Tiny Rodent|g' gnuzilla/makeicecat
 	find ./gnuzilla/ -type f -exec sed -i 's|GNU Foundation|No Foundation|g' {} \;
 	sed -i 's|GNU Foundation|No Foundation|g' gnuzilla/makeicecat
+	find ./gnuzilla/ -type f -exec sed -i 's|GNU Project|No Project|g' {} \;
+	sed -i 's|GNU Project|No Project|g' gnuzilla/makeicecat
 	find ./gnuzilla/ -type f -exec sed -i 's|No Corporation|No Corporation|g' {} \;
 	sed -i 's|No Corporation|No Corporation|g' gnuzilla/makeicecat
+	find ./gnuzilla/ -type f -exec sed -i 's|www.gnu.org|github.com/eyedeekay/GingerShrew|g' {} \;
+	sed -i 's|www.gnu.org|github.com/eyedeekay/GingerShrew|g' gnuzilla/makeicecat
 	sed -i 's|\\>GNU\\|\\>No\\|g' gnuzilla/makeicecat
 
 #libatk1.0-0 (>= 1.12.4)
