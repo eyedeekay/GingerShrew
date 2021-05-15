@@ -13,6 +13,20 @@ export CCACHE_COMPRESS=""
 
 build: gingershrew gen
 
+docker: docker-build docker-clean docker-run docker-copy
+
+docker-build:
+	docker build -f Dockerfile.linux -t eyedeekay.unbrandedbrowser .
+
+docker-run:
+	docker run -it --name eyedeekay.unbrandedbrowser eyedeekay.unbrandedbrowser
+
+docker-copy:
+	docker cp eyedeekay.unbrandedbrowser:/home/user/GingerShrew/ GingerShrew/
+
+docker-clean:
+	docker rm -f eyedeekay.unbrandedbrowser
+
 sums:
 	sha256sum gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2
 	sha256sum import/gingershrew-$(GINGERSHREW_VERSION).$(GINGERSHREW_REVISION).0.en-US.linux-x86_64.tar.bz2

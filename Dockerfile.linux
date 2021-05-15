@@ -1,6 +1,22 @@
-FROM ubuntu:18.04
-RUN apt-get update && apt-get install -y git golang-go make
-COPY . /src/GingerShrew
-WORKDIR /src/GingerShrew
-RUN make deps
-CMD make
+FROM ubuntu:20.04
+RUN sed 's|deb |deb-src |g' /etc/apt/sources.list >> /etc/apt/sources.list.d/src.list
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install --fix-missing -y git golang-1.13-go make mercurial gnupg wget curl clang golang-go
+RUN curl https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get update
+RUN apt-get install -y nodejs
+#RUN apt-get purge -y *rust* *cargo* python3*
+RUN apt-get build-dep -y firefox
+RUN apt-get purge -y *rust* *cargo*
+RUN wget http://us.archive.trisquel.info/trisquel/pool/main/r/rename/rename_1.10-1_all.deb
+RUN dpkg --install ./rename_1.10-1_all.deb
+RUN adduser --gecos 'user,,,,' --disabled-password user 
+COPY . /home/user/GingerShrew
+RUN chown -R user:user /home/user && chmod o+rwx /home/user
+USER user
+RUN mkdir -p /home/user/GingerShrew
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+WORKDIR /home/user/GingerShrew
+RUN . /home/user/.cargo/env && cargo install cbindgen
+#RUN . /home/user/.cargo/env && make gingershrew
+CMD . /home/user/.cargo/env && make build

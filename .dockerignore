@@ -1,1 +1,7 @@
+.git
 gnuzilla
+parts/*/*.go
+*.deb
+*.tar.xz
+*.tar.gz
+*.tar.*
