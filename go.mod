@@ -11,5 +11,6 @@ require (
 	github.com/nwaples/rardecode v1.1.0 // indirect
 	github.com/pierrec/lz4 v2.5.2+incompatible // indirect
 	github.com/ulikunitz/xz v0.5.7 // indirect
-	github.com/zserge/lorca v0.1.9
+	github.com/zserge/lorca v0.1.10
+	golang.org/x/net v0.8.0 // indirect
 )
